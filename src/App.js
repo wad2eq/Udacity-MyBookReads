@@ -22,9 +22,15 @@ class BooksApp extends React.Component {
       });
     });
   }
+  updateBookState = (book, shelf)=>{
+    //If shelef not change do nothing
+    this.setState((currentState) =>({
+      
+    }));
+  }
   render() {
     const{books,showSearchPage} = this.state;
-    console.log("ssd")
+    console.log(books)
   
     return (
       <div className="app">
@@ -64,13 +70,40 @@ class BooksApp extends React.Component {
                   <h2 className="bookshelf-title">Currently Reading</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
-                      {books
+                    {books
                         .filter((a) => {
-                          console.log(a.shelf);
                           return a.shelf === "currentlyReading";
                         })
                         .map((a, index) => (
-                          <div>{a.shelf}</div>
+                          <li key="index">
+                          <div className="book">
+                            <div className="book-top">
+                              <div
+                                className="book-cover"
+                                style={{
+                                  width: 128,
+                                  height: 192,
+                                  backgroundImage:`url(${a.imageLinks.thumbnail})`,
+                                }}
+                              ></div>
+                              <div className="book-shelf-changer">
+                                <select>
+                                  <option value="move" disabled>
+                                    Move to...
+                                  </option>
+                                  <option value="currentlyReading">
+                                    Currently Reading
+                                  </option>
+                                  <option value="wantToRead">Want to Read</option>
+                                  <option value="read">Read</option>
+                                  <option value="none">None</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="book-title">{a.title}</div>
+                            <div className="book-authors">{a.publisher}</div>
+                          </div>
+                        </li>
                         ))}
                     </ol>
                   </div>
@@ -79,14 +112,41 @@ class BooksApp extends React.Component {
                   <h2 className="bookshelf-title">Want to Read</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
-                      {books
-                          .filter((a) => {
-                            console.log(a.shelf);
-                            return a.shelf === "wantToRead";
-                          })
-                          .map((a, index) => (
-                            <div>{a.shelf}</div>
-                          ))}
+                    {books
+                        .filter((a) => {
+                          return a.shelf === "wantToRead";
+                        })
+                        .map((a, index) => (
+                          <li key="index">
+                          <div className="book">
+                            <div className="book-top">
+                              <div
+                                className="book-cover"
+                                style={{
+                                  width: 128,
+                                  height: 192,
+                                  backgroundImage:`url(${a.imageLinks.thumbnail})`,
+                                }}
+                              ></div>
+                              <div className="book-shelf-changer">
+                                <select>
+                                  <option value="move" disabled>
+                                    Move to...
+                                  </option>
+                                  <option value="currentlyReading">
+                                    Currently Reading
+                                  </option>
+                                  <option value="wantToRead">Want to Read</option>
+                                  <option value="read">Read</option>
+                                  <option value="none">None</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="book-title">{a.title}</div>
+                            <div className="book-authors">{a.publisher}</div>
+                          </div>
+                        </li>
+                        ))}
                       </ol>
                   </div>
                 </div>
@@ -96,7 +156,6 @@ class BooksApp extends React.Component {
                     <ol className="books-grid">
                     {books
                         .filter((a) => {
-                          console.log(a);
                           return a.shelf === "read";
                         })
                         .map((a, index) => (
