@@ -4,6 +4,7 @@ import "./App.css";
 import { Route, Link } from 'react-router-dom';
 import SearchBook from "./SearchBook";
 import * as BooksAPI from "./BooksAPI";
+import Shelf from "./Shelf";
 import Book from './Book';
 class BooksApp extends React.Component {
   state = {
@@ -14,6 +15,7 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     showSearchPage: false,
+    shelf: [ "currentlyReading","wantToRead", "read"] ,
     books: [],
   };
 
@@ -35,7 +37,7 @@ class BooksApp extends React.Component {
       <Book book={book} shelf={shelf} key={book.id} changeBookShelf = {this.changBookState} />
     )
   }
-  changBookState=(bookId,newShelf)=>{
+  changBookShelf=(bookId,newShelf)=>{
     const{books} = this.state;
     //Maping hole local state :)
     const el = books.map((book)=>{
@@ -46,7 +48,7 @@ class BooksApp extends React.Component {
     })
   }
   render() {
-    const{books,showSearchPage} = this.state;
+    const{books,showSearchPage, shelf} = this.state;
     return (
       <div className="app">
           <Route
@@ -62,48 +64,9 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                    {books
-                        .filter((book) => {
-                          return book.shelf === "currentlyReading";
-                        })
-                        .map((book) => (
-                          this.createBookComponent(book,"currentlyReading")
-                        ))}
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                    {books
-                        .filter((a) => {
-                          return a.shelf === "wantToRead";
-                        })
-                        .map((book) => (
-                          this.createBookComponent(book,"wantToRead")
-                        ))}
-                      </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                    {books
-                        .filter((a) => {
-                          return a.shelf === "read";
-                        })
-                        .map((book) => (
-                          this.createBookComponent(book,"read")
-                        ))}
-                    </ol>
-                  </div>
-                </div>
+                <Shelf books={books} shelf={shelf[0]} changBookShelf={this.changBookShelf}/> 
+                <Shelf books={books} shelf={shelf[1]} changBookShelf={this.changBookShelf}/>  
+                <Shelf books={books} shelf={shelf[2]} changBookShelf={this.changBookShelf}/>          
               </div>
             </div>
             <div className="open-search">
