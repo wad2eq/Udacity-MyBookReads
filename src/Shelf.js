@@ -14,9 +14,8 @@ const Shelf = ({ books, shelf, changBookShelf }) => {
             .map((book) => (
               <Book
                 book={book}
-                shelf={shelf}
                 key={book.id}
-                hangeBookShelf={changBookShelf}
+                changeBookShelf={changBookShelf}
               />
             ))}
         </ol>

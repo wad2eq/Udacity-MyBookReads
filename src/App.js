@@ -14,7 +14,6 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    showSearchPage: false,
     shelf: [ "currentlyReading","wantToRead", "read"] ,
     books: [],
   };
@@ -26,34 +25,35 @@ class BooksApp extends React.Component {
       });
     });
   }
-  updateBookState = (book, shelf)=>{
+  updateBookStateApi = (book, shelf)=>{
     //If shelef not change do nothing
-    this.setState((currentState) =>({
+    BooksAPI.update(book, shelf).then(data=>console.log(data));
+    // this.setState((currentState) =>({
 
-    }));
+    // }));
   }
-  createBookComponent=(book, shelf)=>{
-    return(
-      <Book book={book} shelf={shelf} key={book.id} changeBookShelf = {this.changBookState} />
-    )
-  }
-  changBookShelf=(bookId,newShelf)=>{
+  /**
+   * Updating books state
+   * @param {string} bookId The book objet ID
+   * @param {string} newShelf The new shelf for book
+   */
+  changBookShelf=(newBook,newShelf)=>{
     const{books} = this.state;
     //Maping hole local state :)
     const el = books.map((book)=>{
-      return book.id === bookId? {...book, shelf:newShelf}: book
+      return book.id === newBook.id? {...book, shelf:newShelf}: book
     })
     this.setState({
       books: el
     })
   }
   render() {
-    const{books,showSearchPage, shelf} = this.state;
+    const{books, shelf} = this.state;
     return (
       <div className="app">
           <Route
             path='/search'
-            component={SearchBook}
+            render={()=> (<SearchBook changeBookShelf={this.updateBookStateApi} books={books} />)}
             />
           <Route
             exact

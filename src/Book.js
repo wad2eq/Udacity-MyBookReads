@@ -7,7 +7,8 @@ class Book extends Component{
         console.log(e.target.value);
     }
     render(){
-        const{book,shelf, changeBookShelf} = this.props;
+      const{book,changeBookShelf} = this.props;
+      console.log(book);
         return(
             <li>
             <div className="book fadeBook">
@@ -22,8 +23,8 @@ class Book extends Component{
                 ></div>
                 <div className="book-shelf-changer">
                   <select  
-                    onChange={(e)=> changeBookShelf(book.id,e.target.value)}
-                    value={shelf}>
+                    onChange={(e)=> changeBookShelf(book,e.target.value)}
+                    value={book.shelf}>
                     <option value="move" disabled>
                       Move to...
                     </option>
@@ -38,6 +39,7 @@ class Book extends Component{
               </div>
               <div className="book-title">{book.title}</div>
               <div className="book-authors">{book.publisher}</div>
+              <div className="book-category">{book.categories? book.categories.map((a)=><strong>{a}</strong>): 'No categories'}</div>
             </div>
           </li>
         )
