@@ -8,7 +8,6 @@ class Book extends Component{
     }
     render(){
       const{book,changeBookShelf} = this.props;
-      console.log(book);
         return(
             <li>
             <div className="book fadeBook">

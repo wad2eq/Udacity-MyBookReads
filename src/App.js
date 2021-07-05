@@ -25,13 +25,6 @@ class BooksApp extends React.Component {
       });
     });
   }
-  updateBookStateApi = (book, shelf)=>{
-    //If shelef not change do nothing
-    BooksAPI.update(book, shelf).then(data=>console.log(data));
-    // this.setState((currentState) =>({
-
-    // }));
-  }
   /**
    * Updating books state
    * @param {string} bookId The book objet ID
