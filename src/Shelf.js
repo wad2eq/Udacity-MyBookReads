@@ -4,12 +4,12 @@ import Book from "./Book";
 const Shelf = ({ books, shelf, changBookShelf }) => {
   return (
     <div className="bookshelf">
-      <h2 className="bookshelf-title">Read</h2>
+      <h2 className="bookshelf-title">{shelf[1]}</h2>
       <div className="bookshelf-books">
         <ol className="books-grid">
           {books
             .filter((a) => {
-              return a.shelf === shelf;
+              return a.shelf === shelf[0];
             })
             .map((book) => (
               <Book
