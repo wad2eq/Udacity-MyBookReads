@@ -5,7 +5,6 @@ import { Route, Link } from 'react-router-dom';
 import SearchBook from "./SearchBook";
 import * as BooksAPI from "./BooksAPI";
 import Shelf from "./Shelf";
-import Book from './Book';
 class BooksApp extends React.Component {
   state = {
     /**
@@ -17,13 +16,19 @@ class BooksApp extends React.Component {
     shelf: [ ["currentlyReading", "Currently Reading"],["wantToRead", "Want To Read"], ["read", "Read"]] ,
     books: [],
   };
-
-  componentDidMount() {
+  updateLocaBookState(){
     BooksAPI.getAll().then((data) => {
       this.setState({
         books: data,
       });
     });
+  } 
+  componentDidMount() {
+    this.updateLocaBookState();
+  }
+  updateBookStateApi = (book, shelf)=>{
+    //If shelef not change do nothing
+    BooksAPI.update(book, shelf).then(()=> this.updateLocaBookState())
   }
   /**
    * Updating books state
@@ -35,10 +40,11 @@ class BooksApp extends React.Component {
     //Maping hole local state :)
     const el = books.map((book)=>{
       return book.id === newBook.id? {...book, shelf:newShelf}: book
-    })
-    this.setState({
+    });
+    this.setState(()=>({
       books: el
-    })
+    }));
+    this.updateBookStateApi(newBook, newShelf);
   }
   render() {
     const{books, shelf} = this.state;
