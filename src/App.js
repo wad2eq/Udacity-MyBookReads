@@ -1,9 +1,10 @@
 import React from "react";
 // import * as BooksAPI from './BooksAPI'
 import "./App.css";
-import * as BooksAPI from "./BooksAPI";
-import Book from './Book';
+import { Route, Link } from 'react-router-dom';
 import SearchBook from "./SearchBook";
+import * as BooksAPI from "./BooksAPI";
+import Shelf from "./Shelf";
 class BooksApp extends React.Component {
   state = {
     /**
@@ -12,102 +13,68 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    showSearchPage: false,
+    shelf: [ ["currentlyReading", "Currently Reading"],["wantToRead", "Want To Read"], ["read", "Read"]] ,
     books: [],
   };
-
-  componentDidMount() {
+  updateLocaBookState(){
     BooksAPI.getAll().then((data) => {
       this.setState({
         books: data,
       });
     });
+  } 
+  componentDidMount() {
+    this.updateLocaBookState();
   }
-  updateBookState = (book, shelf)=>{
+  updateBookStateApi = (book, shelf)=>{
     //If shelef not change do nothing
-    this.setState((currentState) =>({
-
-    }));
+    BooksAPI.update(book, shelf).then(()=> this.updateLocaBookState())
   }
-  createBookComponent=(book, shelf)=>{
-    return(
-      <Book book={book} shelf={shelf} key={book.id} changeBookShelf = {this.changBookState} />
-    )
-  }
-  changBookState=(bookId,newShelf)=>{
+  /**
+   * Updating books state
+   * @param {string} bookId The book objet ID
+   * @param {string} newShelf The new shelf for book
+   */
+  changBookShelf=(newBook,newShelf)=>{
     const{books} = this.state;
     //Maping hole local state :)
     const el = books.map((book)=>{
-      return book.id === bookId? {...book, shelf:newShelf}: book
-    })
-    this.setState({
+      return book.id === newBook.id? {...book, shelf:newShelf}: book
+    });
+    this.setState(()=>({
       books: el
-    })
+    }));
+    this.updateBookStateApi(newBook, newShelf);
   }
   render() {
-    const{books,showSearchPage} = this.state;
+    const{books, shelf} = this.state;
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <SearchBook />
-        ) : (
-          <div className="list-books">
+          <Route
+            path='/search'
+            render={()=> (<SearchBook changeBookShelf={this.updateBookStateApi} books={books} />)}
+            />
+          <Route
+            exact
+            path='/' 
+            render={()=>(<div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
               <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                    {books
-                        .filter((book) => {
-                          return book.shelf === "currentlyReading";
-                        })
-                        .map((book) => (
-                          this.createBookComponent(book,"currentlyReading")
-                        ))}
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                    {books
-                        .filter((a) => {
-                          return a.shelf === "wantToRead";
-                        })
-                        .map((book) => (
-                          this.createBookComponent(book,"wantToRead")
-                        ))}
-                      </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                    {books
-                        .filter((a) => {
-                          return a.shelf === "read";
-                        })
-                        .map((book) => (
-                          this.createBookComponent(book,"read")
-                        ))}
-                    </ol>
-                  </div>
-                </div>
+                <Shelf books={books} shelf={shelf[0]} changBookShelf={this.changBookShelf}/> 
+                <Shelf books={books} shelf={shelf[1]} changBookShelf={this.changBookShelf}/>  
+                <Shelf books={books} shelf={shelf[2]} changBookShelf={this.changBookShelf}/>          
               </div>
             </div>
             <div className="open-search">
-              <button onClick={() => this.setState({ showSearchPage: true })}>
+              <Link to="/search">
                 Add a book
-              </button>
+              </Link>
             </div>
-          </div>
-        )}
+          </div>)}
+          />
       </div>
     );
   }
