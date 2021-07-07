@@ -6,8 +6,11 @@ body {
   line-height: 1.5;
 }
 
+h2{
+  text-align: center;
+}
 body, .app {
-  background: white;
+  background: #def3e5;
 }
 
 /* main page */
@@ -30,17 +33,27 @@ body, .app {
 }
 
 .bookshelf {
-  padding: 0 10px 20px;
+  padding: 30px;
+  margin: 20px;
+  min-height: 350px;
+  background-color: #fffbe6;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
-
+.book{
+  color:#36676f;
+}
 @media (min-width: 600px) {
   .bookshelf {
-    padding: 0 20px 40px;
+    padding:30px;
   }
 }
 
 .bookshelf-title {
-  border-bottom: 1px solid #dedede;
+  border-bottom: 1px solid #37966f;
+  color:#fd5522;
+  font-weight: 500;
+  padding-bottom: .5em;
+  margin:0 auto 20px auto;
 }
 
 .bookshelf-books {
@@ -137,11 +150,10 @@ button:active {
   padding: 10px 15px;
   text-align: left;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  border-radius: .5em;
+  /* border-radius: .5em; */
   margin: .4em;
   background-color: #fffbe6;
 }
-
 .book {
   width: 140px;
 }
@@ -149,6 +161,7 @@ button:active {
 .book-title,
 .book-authors {
   font-size: 0.8em;
+  font-weight: 500;
 }
 
 .book-title {
@@ -159,6 +172,14 @@ button:active {
   color: #999;
 }
 
+.book-category{
+  margin-top: .8em;
+  border-top: 1px solid #b9e4c9;
+  font-size:0.8em;
+}
+.book-category strong{
+  font-weight:400;
+}
 .book-top {
   position: relative;
   height: 200px;
