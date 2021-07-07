@@ -36,7 +36,7 @@ class Book extends Component{
               </div>
               <div className="book-title">{book.title}</div>
               <div className="book-authors">{book.publisher}</div>
-              <div className="book-category">{book.categories? book.categories.map((a)=><strong>{a}</strong>): 'No categories'}</div>
+              <div className="book-category">{book.categories? book.categories.map((a, index)=><strong key={index}>{a}</strong>): 'No categories'}</div>
             </div>
           </li>
         )
