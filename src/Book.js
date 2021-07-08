@@ -1,11 +1,14 @@
 import React, {Component} from "react";
+//Design
 import "./Book.css";
-
+import bookThumbnail from "./img/bookthum.jpg"
+// /biography
 class Book extends Component{
-
-    optionChange=(e)=>{
-        console.log(e.target.value);
-    }
+    // bookThumbnail=()=>{
+    //     let thum=this.props.book.imageLinks;
+    //     thum === undefined? {backgroundImage: `url(${book})`}
+    //     {backgroundImage:`url(${thum.thumbnail})`}
+    // }
     render(){
       const{book,changeBookShelf} = this.props;
         return(
@@ -14,9 +17,8 @@ class Book extends Component{
               <div className="book-top">
                 <div
                   className="book-cover"
-                  style={{
-                    backgroundImage:`url(${book.imageLinks.thumbnail})`,
-                  }}
+                  style={book.imageLinks === undefined ? ({backgroundImage: `url(${bookThumbnail})`})
+                  :({backgroundImage:`url(${book.imageLinks.thumbnail})`})}
                 ></div>
                 <div className="book-shelf-changer">
                   <select  
