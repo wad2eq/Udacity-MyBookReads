@@ -4,6 +4,13 @@
 .fadeBook{
     animation: fadeInAnimation 2s ease;
 }
+img{
+    max-width: 100%;
+    height: auto;
+}
+.book-cover{
+    background-size: contain;
+}
 
 @keyframes fadeInAnimation {
     0%{
