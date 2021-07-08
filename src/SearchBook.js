@@ -2,38 +2,57 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Book from "./Book";
 import { search } from "./BooksAPI";
+//Design
+import keny from "./img/keny.gif";
 class SearchBook extends Component {
   state = {
     searchedBooks: [],
-    value: "",
+    message: "Find some books and take your best place to read :)",
   };
   findBook(query) {
-
-    if(query === ''){
+    if (query === "") {
+      this.setState({
+        searchedBooks: [],
+        message: "Find some books and take your best place to read :)",
+      });
+      console.log(this.state.searchedBooks);
       return;
     }
     search(query)
-    .then(data=>{
-       data.map(book =>{
-         this.props.books.map((stateBoook) =>{
-          if(book.id === stateBoook.id){
-            book.shelf = stateBoook.shelf;
-            return;
-          }else if (book.shelf===undefined){
-            book.shelf= 'none';
-          }
-        })
+      .then((response) => {
+        if (response.error) {
+          this.setState({
+            message: "Better try again, the time is running ..... :(",
+          });
+          return [];
+        } else {
+          this.setState({ message: "Select book to your shelf" });
+          return response;
+        }
       })
-    return data})
-    .then(data=>{
-      this.setState({
-        searchedBooks: data
+      .then((data) => {
+        data.map((book) => {
+          this.props.books.map((stateBoook) => {
+            if (book.id === stateBoook.id) {
+              book.shelf = stateBoook.shelf;
+              return;
+            } else if (book.shelf === undefined) {
+              book.shelf = "none";
+            }
+          });
+        });
+        return data;
       })
-    })
+      .then((data) => {
+        this.setState({
+          searchedBooks: data,
+        });
+      });
   }
-  
+
   //Ask book for api
   render() {
+    const { searchedBooks, message } = this.state;
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -48,21 +67,28 @@ class SearchBook extends Component {
             />
           </div>
         </div>
-        <div>{this.state.value}</div>
         <div className="search-books-results">
           <div className="bookshelf">
-            <h2 className="bookshelf-title">Finded Books</h2>
+          <h2 className="bookshelf-title">{message}</h2>
             <div className="bookshelf-books">
-              <ol className="books-grid">
-                {
-                  this.state.searchedBooks.map((book) => (
+              {searchedBooks.length === 0 ? (
+                <div className="bookshelf-books">
+                  <img
+                    src={keny}
+                    alt="Best place when you need read something"
+                  />
+                </div>
+              ) : (
+                <ol className="books-grid">
+                  {searchedBooks.map((book) => (
                     <Book
                       book={book}
                       key={book.id}
                       changeBookShelf={this.props.changeBookShelf}
                     />
                   ))}
-              </ol>
+                </ol>
+              )}
             </div>
           </div>
         </div>
