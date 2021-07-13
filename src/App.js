@@ -16,16 +16,14 @@ class BooksApp extends React.Component {
     shelf: [ ["currentlyReading", "Currently Reading"],["wantToRead", "Want To Read"], ["read", "Read"]] ,
     books: [],
   };
-  updateLocaBookState(){
-    BooksAPI.getAll().then((data) => {
-      this.setState({
-        books: data,
-      });
-    });
+  async updateLocaBookState(){
+    const books = await BooksAPI.getAll();
+    this.setState({books})
   } 
   componentDidMount() {
     this.updateLocaBookState();
   }
+
   updateBookStateApi = (book, shelf)=>{
     //If shelef not change do nothing
     BooksAPI.update(book, shelf).then(()=> this.updateLocaBookState())

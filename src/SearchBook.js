@@ -8,14 +8,17 @@ class SearchBook extends Component {
   state = {
     searchedBooks: [],
     message: "Find some books and take your best place to read :)",
+    query:''
   };
   findBook(query) {
+    this.setState({
+      query
+    })
     if (query === "") {
       this.setState({
         searchedBooks: [],
         message: "Find some books and take your best place to read :)",
       });
-      console.log(this.state.searchedBooks);
       return;
     }
     search(query)
@@ -44,9 +47,16 @@ class SearchBook extends Component {
         return data;
       })
       .then((data) => {
-        this.setState({
-          searchedBooks: data,
-        });
+        console.log("to jest state" + this.state.query);
+        if(this.state.query !==''){
+          this.setState({
+            searchedBooks: data,
+          });
+        }else{
+          this.setState({
+            searchedBooks: [],
+          });
+        }
       });
   }
 
@@ -63,15 +73,17 @@ class SearchBook extends Component {
             <input
               onChange={(e) => this.findBook(e.target.value)}
               type="text"
+              value={this.state.query}
               placeholder="Search by title or author"
             />
           </div>
         </div>
         <div className="search-books-results">
           <div className="bookshelf">
+            <h2>{this.state.query}</h2>
           <h2 className="bookshelf-title">{message}</h2>
             <div className="bookshelf-books">
-              {searchedBooks.length === 0 ? (
+              {searchedBooks.length === 0? (
                 <div className="bookshelf-books">
                   <img
                     src={keny}
