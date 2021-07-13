@@ -47,7 +47,6 @@ class SearchBook extends Component {
         return data;
       })
       .then((data) => {
-        console.log("to jest state" + this.state.query);
         if(this.state.query !==''){
           this.setState({
             searchedBooks: data,
@@ -80,7 +79,6 @@ class SearchBook extends Component {
         </div>
         <div className="search-books-results">
           <div className="bookshelf">
-            <h2>{this.state.query}</h2>
           <h2 className="bookshelf-title">{message}</h2>
             <div className="bookshelf-books">
               {searchedBooks.length === 0? (
